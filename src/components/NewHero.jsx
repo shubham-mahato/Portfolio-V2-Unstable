@@ -8,14 +8,13 @@ gsap.registerPlugin(ScrollTrigger);
 
 const NewHero = () => {
 
-  const [currentIndex,setCurrentIndex] = useState(1);
-  const [hasClicked,setHasClicked] = useState(false);
-  const [isLoading,setIsLoading] = useState(true);
-  const [loadedVideos,setLoadedVideos] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadedVideos, setLoadedVideos] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [particles, setParticles] = useState([]);
-  const totalVideos = 3;
-  const nextVideoRef = useRef(null);
+  const totalVideos = 4;
+  const currentVideoRef = useRef(null);
 
   // Mouse tracking for cursor follower
   useEffect(() => {
@@ -69,48 +68,34 @@ const NewHero = () => {
   }, []);
 
   const handleVideoLoad = () => {
-    setLoadedVideos((prev) => (prev+1));
+    setLoadedVideos((prev) => (prev + 1));
   }
 
-  const handleDotClick = (index) => {
-    if (index !== currentIndex) {
-      setHasClicked(true);
-      setCurrentIndex(index);
+  // Auto-loop videos every 5 seconds (adjust duration as needed)
+  useEffect(() => {
+    if (!isLoading) {
+      const interval = setInterval(() => {
+        setCurrentIndex(prevIndex => 
+          prevIndex >= totalVideos ? 1 : prevIndex + 1
+        );
+      }, 5000); // Change video every 5 seconds
+
+      return () => clearInterval(interval);
     }
-  }
+  }, [isLoading, totalVideos]);
 
   useEffect(() => {
-    if(loadedVideos === totalVideos){
+    if (loadedVideos === totalVideos) {
       setIsLoading(false);
     }
-  },[loadedVideos])
+  }, [loadedVideos])
 
-  useGSAP(
-    () => {
-      if (hasClicked) {
-        gsap.set("#next-video", { visibility: "visible" });
-        gsap.to("#next-video", {
-          transformOrigin: "center center",
-          scale: 1,
-          width: "100%",
-          height: "100%",
-          duration: 1,
-          ease: "power1.inOut",
-          onStart: () => nextVideoRef.current.play(),
-        });
-        gsap.from("#current-video", {
-          transformOrigin: "center center",
-          scale: 0,
-          duration: 1.5,
-          ease: "power1.inOut",
-        });
-      }
-    },
-    {
-      dependencies: [currentIndex],
-      revertOnUpdate: true,
-    }
-  );
+  // Handle video ended event to immediately switch to next video
+  const handleVideoEnded = () => {
+    setCurrentIndex(prevIndex => 
+      prevIndex >= totalVideos ? 1 : prevIndex + 1
+    );
+  };
 
   useGSAP(() => {
     gsap.set("#video-frame", {
@@ -171,23 +156,15 @@ const NewHero = () => {
       <div id="video-frame" className='relative z-10 h-dvh w-screen overflow-hidden rounded-lg bg-blue-75'>
           <div>
             <video 
-            ref={nextVideoRef}
-            src={getVideoSrc(currentIndex)}
-            loop
-            muted
-            id='next-video'
-            className='absolute-center invisible absolute z-20 size-64 object-cover object-center'
-            onLoadedData={handleVideoLoad}
-            />
-
-            <video 
-            src={getVideoSrc(currentIndex)}
-            autoPlay
-            loop
-            muted
-            id="current-video"
-            className="absolute left-0 top-0 size-full object-cover object-center"
-            onLoadedData={handleVideoLoad}
+              key={currentIndex} // Force re-render when currentIndex changes
+              ref={currentVideoRef}
+              src={getVideoSrc(currentIndex)}
+              autoPlay
+              muted
+              id="current-video"
+              className="absolute left-0 top-0 size-full object-cover object-center"
+              onLoadedData={handleVideoLoad}
+              onEnded={handleVideoEnded}
             />
 
             {/* Preload other videos */}
@@ -197,7 +174,6 @@ const NewHero = () => {
                 <video
                   key={index}
                   src={getVideoSrc(index)}
-                  loop
                   muted
                   className="hidden"
                   onLoadedData={handleVideoLoad}
@@ -206,49 +182,46 @@ const NewHero = () => {
           </div>
 
           {/* Center Text Content */}
-<div className='absolute inset-0 flex items-center justify-center z-40'>
-  <div className='text-center px-4'>
-    <p className='text-blue-100 text-sm md:text-base font-light tracking-wider mb-6 uppercase drop-shadow-lg'>
-      Shubham Mahato
-    </p>
+          <div className='absolute inset-0 flex items-center justify-center z-40'>
+            <div className='text-center px-4'>
+              <p className='text-blue-100 text-sm md:text-base font-light tracking-wider mb-6 uppercase drop-shadow-lg'>
+                Shubham Mahato
+              </p>
 
-    <h1 className='hero-main-text special-font text-blue-100 uppercase leading-tight mb-8'>
-      <b>Thoughtfully</b><br />
-      Built,<br />
-      <b>Visually</b><br />
-      Brilliant!
-    </h1>
+              <h1 className='hero-main-text special-font text-blue-100 uppercase leading-tight mb-8'>
+                <b>Thoughtfully</b><br />
+                Built,<br />
+                <b>Visually</b><br />
+                Brilliant!
+              </h1>
 
-    {/* Button Group */}
-    <div className='flex justify-center gap-4 flex-wrap'>
-      <Button
-        id="about-me"
-        title="About Me"
-        containerClass="bg-yellow-300 flex-center gap-1 px-6 py-2 rounded-md shadow-md"
-      />
-      <Button
-        id="download-cv"
-        title="Download CV"
-        containerClass="bg-yellow-300 flex-center gap-1 px-6 py-2 rounded-md shadow-md"
-      />
-    </div>
-  </div>
+              {/* Button Group */}
+<div className='flex justify-center gap-4 flex-wrap'>
+  <Button
+    id="about-me"
+    title="About Me"
+    containerClass="text-yellow-300 border-yellow-300 bg-transparent"
+  />
+  <Button
+    id="download-cv"
+    title="Download CV"
+    containerClass="text-yellow-300 border-yellow-300 bg-transparent"
+  />
 </div>
+            </div>
+          </div>
 
-
-          {/* Navigation Dots */}
+          {/* Video Progress Indicator */}
           <div className='absolute bottom-8 left-1/2 transform -translate-x-1/2 z-50'>
-            <div className='flex space-x-4'>
+            <div className='flex space-x-2'>
               {Array.from({ length: totalVideos }, (_, i) => i + 1).map((index) => (
-                <button
+                <div
                   key={index}
-                  onClick={() => handleDotClick(index)}
-                  className={`w-3 h-3 rounded-full border-2 border-white/50 transition-all duration-300 ease-in-out hover:scale-125 ${
+                  className={`w-8 h-1 rounded-full transition-all duration-300 ${
                     currentIndex === index 
-                      ? 'bg-blue-400 border-blue-400 shadow-lg shadow-blue-400/50 scale-110' 
-                      : 'bg-white/20 hover:bg-white/40'
+                      ? 'bg-blue-400 shadow-lg shadow-blue-400/50' 
+                      : 'bg-white/30'
                   }`}
-                  aria-label={`Switch to video ${index}`}
                 />
               ))}
             </div>
