@@ -185,7 +185,7 @@ const NewHero = () => {
           <div className='absolute inset-0 flex items-center justify-center z-40'>
             <div className='text-center px-4'>
               <p className='text-blue-100 text-sm md:text-base font-light tracking-wider mb-6 uppercase drop-shadow-lg'>
-                Shubham Mahato
+                Shubham Kumar Mahato
               </p>
 
               <h1 className='hero-main-text special-font text-blue-100 uppercase leading-tight mb-8'>
