@@ -3,6 +3,7 @@ import React from 'react'
 import gsap from 'gsap';
 
 import { ScrollTrigger } from 'gsap/all';
+import AnimatedTitle from './AnimatedTitle';
 gsap.registerPlugin(ScrollTrigger)
 const About = () => {
 
@@ -29,11 +30,9 @@ pinSpacing:true     }
     <div id='about' className='min-h-screen w-screen'>
       <div className='relative mb-8 mt-36 flex flex-col items-center gap-5'>
         <h2 className='font-general text-sm uppercase md:text-[10px]'>About Me</h2>
-        <div className='mt-5 text-center text-4xl uppercase leading-[0.8] md:text-[6rem]'>
-          Trained in the art of 
-          <br /> code and chaos
-        </div>
 
+        <AnimatedTitle title ="Trained in the art of 
+          <br /> code and chaos" containerClass="mt-5 !text-black text-center"/>
         <div className='about-subtext'>
           <p>
 I'm Shubham Mahato — a full-stack developer and relentless problem solver with a passion for blending design, logic, and gameplay. 

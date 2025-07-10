@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Button = ({title, id, containerClass}) => {
+const Button = ({title, id,rightIcon,leftIcon, containerClass}) => {
   return (
     <button 
       id={id} 
@@ -12,6 +12,7 @@ const Button = ({title, id, containerClass}) => {
         active:scale-95
         ${containerClass}`}
     >
+      {leftIcon}
       <span className='relative z-10 transition-colors duration-300'>
         {title}
       </span>
@@ -19,6 +20,7 @@ const Button = ({title, id, containerClass}) => {
       {/* Hover background effect */}
       <div className='absolute inset-0 bg-white transform scale-x-0 origin-left 
         transition-transform duration-300 ease-in-out group-hover:scale-x-100'></div>
+        {rightIcon}
     </button>
   )
 }
