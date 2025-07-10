@@ -73,43 +73,49 @@ body {
   }
 
   .hero-main-text {
-  @apply font-zentry font-black leading-tight uppercase text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl;
-  text-shadow: 0 0 20px rgba(59, 130, 246, 0.5), 0 0 40px rgba(59, 130, 246, 0.3);
-}
-
-.cursor-follower {
-  position: fixed;
-  width: 20px;
-  height: 20px;
-  background: radial-gradient(circle, rgba(59, 130, 246, 0.8) 0%, rgba(59, 130, 246, 0.3) 50%, transparent 100%);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transition: transform 0.1s ease;
-  mix-blend-mode: screen;
-}
-
-.particle {
-  position: fixed;
-  background: rgba(59, 130, 246, 0.6);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 30;
-  box-shadow: 0 0 10px rgba(59, 130, 246, 0.8);
-  animation: particle-glow 2s ease-in-out infinite alternate;
-}
-
-@keyframes particle-glow {
-  0% {
-    box-shadow: 0 0 5px rgba(59, 130, 246, 0.8);
-    transform: scale(1);
+    @apply font-zentry font-black leading-tight uppercase text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl;
+    text-shadow:
+      0 0 20px rgba(59, 130, 246, 0.5),
+      0 0 40px rgba(59, 130, 246, 0.3);
   }
-  100% {
-    box-shadow: 0 0 15px rgba(59, 130, 246, 1);
-    transform: scale(1.2);
-  }
-}
 
+  .cursor-follower {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    background: radial-gradient(
+      circle,
+      rgba(59, 130, 246, 0.8) 0%,
+      rgba(59, 130, 246, 0.3) 50%,
+      transparent 100%
+    );
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+    mix-blend-mode: screen;
+  }
+
+  .particle {
+    position: fixed;
+    background: rgba(59, 130, 246, 0.6);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 30;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.8);
+    animation: particle-glow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes particle-glow {
+    0% {
+      box-shadow: 0 0 5px rgba(59, 130, 246, 0.8);
+      transform: scale(1);
+    }
+    100% {
+      box-shadow: 0 0 15px rgba(59, 130, 246, 1);
+      transform: scale(1.2);
+    }
+  }
 
   .about-subtext {
     @apply absolute bottom-[-80dvh] left-1/2 w-full max-w-96 -translate-x-1/2 text-center font-circular-web text-lg md:max-w-[34rem];
@@ -274,7 +280,23 @@ body {
   left: 0;
   animation: wobble2 var(--uib-speed) infinite ease-in-out;
 }
+.hero-main-text-clean {
+  @apply font-zentry font-black leading-tight uppercase text-white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
 
+.hero-name-text {
+  @apply text-yellow-300 font-light tracking-wider uppercase;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+/* Update your existing special-font to ensure bold words stand out */
+.special-font b {
+  font-family: "Zentry";
+  font-feature-settings: "ss01" on;
+  font-weight: 900;
+  color: #fbbf24; /* Yellow accent for bold words */
+}
 @keyframes spin78236 {
   0% {
     transform: rotate(0deg);
